@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
+    "lodash.debounce": "^4.0.8",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-paginate": "^8.3.0",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
