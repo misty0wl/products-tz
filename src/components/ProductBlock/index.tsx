@@ -1,37 +1,57 @@
-import React, {useState} from "react";
+import React from 'react'
 import styles from './ProductBlock.module.scss';
 import unlikedHeartSVG from '../../../public/icons/heart_icon_unliked.svg'
 import likedHeartSVG from '../../../public/icons/heart_icon_liked.svg'
+import recycleBinSVG from '../../../public/icons/recycle_bin.svg'
+import {deleteProduct, Product, setIsLikedProduct} from "../../redux/slices/productsSlice.ts";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store.ts";
 
-const ProductBlock: React.FC = (props) => {
 
-    const [isLiked, setIsLiked] = useState<boolean>(false);
+interface ProductBlockProps {
+    item: Product;
+}
+
+const ProductBlock = ({item}: ProductBlockProps) => {
+
+    const dispatch: AppDispatch  = useDispatch()
+
+    const likeChangeHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        dispatch(setIsLikedProduct({
+                id: item.id,
+                isLiked: !item.isLiked,
+            }));
+    };
+
+    const onRemoveProductHandler = (event: React.MouseEvent<HTMLImageElement>) =>{
+        event.stopPropagation();
+        if (confirm(`Вы уверены что хотите удалить ${item.title}?`)) {
+            dispatch(deleteProduct(item.id));
+        }
+    }
 
     return (
         <div className={styles.card}>
             <img
                 className={styles.image}
-                src={props.imageUrl}
-                alt="Клавиатура"
+                src={item.imageUrl}
+                alt={`Фото ${item.title}`}
             />
-            <h3 className={styles.title}>{props.title}</h3>
+            <h3 className={styles.title}>{item.title}</h3>
             <p className={styles.description}>
-                {props.description}
+                {item.description}
             </p>
             <div className={styles.actions}>
-                <div onClick={() => setIsLiked((prevState) => !prevState)} className={styles.likeIcon}>
-                    {!isLiked ? <img
-                        src={unlikedHeartSVG}
-                        alt="Иконка лайка"
-                    /> : <img
-                        src={likedHeartSVG}
-                        alt="Иконка лайка"
-                    />}
+                <div onClick={likeChangeHandler} className={styles.likeIcon}>
+                    <img
+                        src={!item.isLiked ? unlikedHeartSVG : likedHeartSVG}
+                        alt={`Лайк для товара ${item.title}`} />
                 </div>
-                <span className={styles.price}>{props.price} ₽</span>
-                <img
-                    src="/icons/recycle_bin.svg" // Путь относительно public
-                    alt="Иконка корзины"
+                <span className={styles.price}>{item.price} ₽</span>
+                <img onClick={onRemoveProductHandler}
+                    src={recycleBinSVG}
+                    alt={`Иконка удаления для товара ${item.title}`}
                     className={styles.deleteIcon}
                 />
             </div>

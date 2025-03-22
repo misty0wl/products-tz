@@ -4,47 +4,40 @@ $secondary-color: #666;
 $max-width: 1200px;
 
 .header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #eee;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    border-radius: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-radius: 10px;
 }
 
 .container {
-    max-width: $max-width;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: $primary-color;
-    text-decoration: none;
+.liked {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  padding: 10px 15px;
+  transition: ease-in-out 0.1s;
+  border-radius: 10px;
+  opacity: 0.7;
+
+  &:hover {
+    background-color: rgba(191, 187, 187, 0.24);
+      opacity: 1;
+  }
 }
 
-.nav {
-    display: flex;
-    gap: 1.5rem;
-}
-
-.navLink {
-    color: $secondary-color;
-    text-decoration: none;
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: $primary-color;
-    }
-}
-
-.navLinkActive {
-    color: $primary-color;
-    font-weight: 600;
+.likedLogo {
+  height: 35px;
+  width: auto;
 }

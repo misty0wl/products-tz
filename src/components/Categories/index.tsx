@@ -6,7 +6,7 @@ const categoriesNames: string[] = ['Клавиатуры', 'Наушники', '
 
 const Categories: React.FC = () => {
 
-    const [categoryId, setCategoryId] = useState<number>();
+    const [categoryId, setCategoryId] = useState<number>(0);
 
     return (
         <div className={styles.categories}>
