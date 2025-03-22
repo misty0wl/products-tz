@@ -1,0 +1,46 @@
+$max-width: 20%;
+$border-color: #000000;
+$hover-color: #ea682c;
+$active-color: #ff9800;
+.categories {
+  width: $max-width;
+  margin-top: 20px;
+  border-right: 2px solid $border-color;
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  height: 100%;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.active {
+  color: $active-color;
+  font-weight: 600;
+}
+
+li {
+  cursor: pointer;
+  margin: 0.5rem 0;
+  padding: 5px 10px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  text-align: right;
+
+  &:hover {
+    color: $hover-color;
+  }
+}

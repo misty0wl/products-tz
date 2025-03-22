@@ -1,13 +1,15 @@
 import React from 'react'
-import './App.css'
-import Products from "./pages/Products.tsx";
+import Header from "./components/Header";
+import Categories from "./components/Categories";
+
 
 const App: React.FC = () => {
     return (
-    <>
-      <Products />
-    </>
-  )
+        <>
+            <Header/>
+            <Categories/>
+        </>
+    )
 }
 
 export default App

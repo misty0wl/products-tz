@@ -7,7 +7,7 @@ import {RootState, AppDispatch} from "../redux/store.ts";
 const Products: React.FC = () =>{
 
     const products: Product[] = useSelector((state: RootState) => state.products.items);
-    const dispatch: AppDispatch  = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
 
     const getProducts = async () => {
         dispatch(fetchProducts())
@@ -19,7 +19,6 @@ const Products: React.FC = () =>{
 
     return (
         <div>
-            {products && <h1>{products[1].title}</h1>}
         </div>
     )
 }
