@@ -1,19 +1,25 @@
-import React from "react";
-import styles from './Categories.module.scss'
+// src/components/Categories.tsx
+import React, {useState} from "react";
+import styles from './Categories.module.scss';
 
-const categoriesNames: string[] = ['Клавиатуры','Наушники']
+const categoriesNames: string[] = ['Клавиатуры', 'Наушники', 'Мышки', 'Корпуса', 'Ноутбуки', 'Мониторы'];
 
-const Categories: React.FC = () =>{
-    return(
+const Categories: React.FC = () => {
+
+    const [categoryId, setCategoryId] = useState<number>();
+
+    return (
         <div className={styles.categories}>
             <ul>
                 {categoriesNames.map((category: string, index: number) => (
-                    <li key={index}>
+                    <li key={index} onClick={() => setCategoryId(index)}
+                        className={categoryId === index ? styles.active : ""}>
                         {category}
-                    </li>))}
+                    </li>
+                ))}
             </ul>
         </div>
-    )
-}
+    );
+};
 
 export default Categories;
