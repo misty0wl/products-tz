@@ -6,6 +6,7 @@ import recycleBinSVG from '../../../public/icons/recycle_bin.svg'
 import {deleteProduct, Product, setIsLikedProduct} from "../../redux/slices/productsSlice.ts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store.ts";
+import { Link } from "react-router";
 
 
 interface ProductBlockProps {
@@ -32,7 +33,9 @@ const ProductBlock = ({item}: ProductBlockProps) => {
     }
 
     return (
+
         <div className={styles.card}>
+            <Link to={`/products/${item.id}`} className={styles.productLink}>
             <img
                 className={styles.image}
                 src={item.imageUrl}
@@ -42,6 +45,7 @@ const ProductBlock = ({item}: ProductBlockProps) => {
             <p className={styles.description}>
                 {item.description}
             </p>
+            </Link>
             <div className={styles.actions}>
                 <div onClick={likeChangeHandler} className={styles.likeIcon}>
                     <img

@@ -1,0 +1,73 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.image {
+  margin: 24px auto;
+  border: 3px solid black;
+}
+
+.info {
+  margin: 0 15px;
+  width: 100%;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.description {
+  font-size: 1.2rem;
+  font-weight: 100;
+}
+
+.price {
+  margin: 15px auto;
+  font-size: 32px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.changepage {
+  border: 3px solid #ed910c;
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: ease-out 0.2s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.escapeLink {
+  display: flex;
+  text-decoration: none;
+}
+
+.escape {
+  border: 3px solid #ed910c;
+  font-size: 1rem;
+  padding: 5px 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: ease-out 0.2s;
+  &:hover {
+    transform: scale(1.1);
+  }
+}

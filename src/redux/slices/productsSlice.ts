@@ -23,6 +23,7 @@ export interface Product {
 
 export interface ProductsState {
     items: Product[];
+    newItems: Product[];
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     error: string | null;
     isFavourite: boolean;
@@ -31,6 +32,7 @@ export interface ProductsState {
 
 const initialState: ProductsState = {
     items: [],
+    newItems: [],
     loading: 'idle',
     error: null,
     isFavourite: false
@@ -52,12 +54,12 @@ export const productsSlice = createSlice({
         setIsFavourite: (state, action: PayloadAction<boolean>) => {
             state.isFavourite = action.payload;
         },
-        deleteProduct: (state, action: PayloadAction<string>) =>{
-            const productIndex = state.items.findIndex(item => item.id === action.payload)
-            if(productIndex > -1) {
-                state.items.splice(productIndex, 1)
-            }
-        }
+        deleteProduct: (state, action: PayloadAction<string>) => {
+            state.items = state.items.filter(item => item.id !== action.payload);
+        },
+        addProduct: (state, action: PayloadAction<Product>) => {
+            state.newItems.push(action.payload)
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.pending, (state) => {
@@ -66,6 +68,7 @@ export const productsSlice = createSlice({
         })
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.items = action.payload
+            state.items.push(...state.newItems)
             state.loading = 'succeeded'
         })
         builder.addCase(fetchProducts.rejected, (state) => {
@@ -76,6 +79,6 @@ export const productsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {setProducts, setIsLikedProduct, setIsFavourite, deleteProduct} = productsSlice.actions
+export const {setProducts, setIsLikedProduct, setIsFavourite, deleteProduct, addProduct} = productsSlice.actions
 
 export default productsSlice.reducer

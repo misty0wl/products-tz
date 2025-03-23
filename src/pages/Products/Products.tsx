@@ -9,6 +9,7 @@ import {fetchProducts} from "../../redux/slices/productsSlice.ts";
 
 const Products = () => {
 
+    const status = useSelector((state: RootState) => state.products.loading)
     const items = useSelector((state: RootState) => state.products.items)
     const isFavourite = useSelector((state : RootState) => state.products.isFavourite)
     const dispatch: AppDispatch = useDispatch();
@@ -22,6 +23,10 @@ const Products = () => {
     useEffect(() =>{
         getProducts()
     }, [])
+
+    if(status==='pending'){
+        return <p>Загрузка данных...</p>
+    }
 
     return (
         <div className={styles.wrapper}>
