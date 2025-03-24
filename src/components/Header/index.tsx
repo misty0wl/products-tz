@@ -2,17 +2,20 @@ import React from "react";
 import unlikedHeartSVG from '../../../public/icons/heart_icon_unliked.svg'
 import likedHeartSVG from '../../../public/icons/heart_icon_liked.svg'
 import plusIconSVG from '../../../public/icons/plus_icon.svg'
+import catalogSVG from '../../../public/icons/catalog.svg'
 import styles from './Header.module.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../redux/store.ts";
 import {setIsFavourite} from "../../redux/slices/productsSlice.ts";
-import {Link} from "react-router";
+import {Link, useNavigate} from "react-router";
+import Search from "../Search/Search.tsx";
 
 
 const Header = () => {
 
     const isFavourite = useSelector((state: RootState) => state.products.isFavourite)
     const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate()
 
     const changeFavouriteHandler = (event: React.MouseEvent<HTMLDivElement>) =>{
         event.stopPropagation()
@@ -22,6 +25,11 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.container}>
+                <div className={styles.headLogo} onClick={() => navigate('/')}>
+                <img className={styles.catalog} src={catalogSVG} alt='Иконка каталога'/>
+                <span>Каталог</span>
+                </div>
+                <Search />
                 <div className={styles.actionsWrapper}>
                     <div onClick={changeFavouriteHandler} className={styles.actions}>
                         <img

@@ -1,18 +1,27 @@
-// src/components/Categories.tsx
-import React, {useState} from "react";
+import React from 'react'
 import styles from './Categories.module.scss';
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../redux/store.ts";
+import {setCategory} from "../../redux/slices/productsSlice.ts";
+import {useCallback} from "react";
 
-const categoriesNames: string[] = ['Клавиатуры', 'Наушники', 'Мышки', 'Корпуса', 'Ноутбуки', 'Мониторы'];
+const categoriesNames: string[] = ['Все', 'Клавиатуры', 'Наушники', 'Мышки', 'Корпуса', 'Ноутбуки', 'Мониторы'];
 
-const Categories: React.FC = () => {
+const Categories = () => {
 
-    const [categoryId, setCategoryId] = useState<number>(0);
+    const categoryId: number = useSelector((state: RootState) => (state.products.category))
+    const dispatch: AppDispatch = useDispatch();
+
+    const onChangeCategory = useCallback((index: number, event: React.MouseEvent<HTMLLIElement>) => {
+        event.stopPropagation()
+        dispatch(setCategory(index));
+    }, [dispatch])
 
     return (
         <div className={styles.categories}>
             <ul>
                 {categoriesNames.map((category: string, index: number) => (
-                    <li key={index} onClick={() => setCategoryId(index)}
+                    <li key={index} onClick={(event) => onChangeCategory(index, event)}
                         className={categoryId === index ? styles.active : ""}>
                         {category}
                     </li>

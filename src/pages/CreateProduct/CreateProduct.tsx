@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {addProduct} from "../../redux/slices/productsSlice.ts";
+import {putProduct} from "../../redux/slices/productsSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../redux/store.ts";
 import {useNavigate} from "react-router";
@@ -12,8 +12,8 @@ type Category =
     }
 
 
-const categories: Category[] = [{id: 0, name: 'Клавиатуры'}, {id: 1, name: 'Наушники'}, {id: 2, name: 'Мышки'},
-    {id: 3, name: 'Корпуса'}, {id: 4, name: 'Ноутбуки'}, {id: 5, name: 'Мониторы'}];
+const categories: Category[] = [{id: 1, name: 'Клавиатуры'}, {id: 2, name: 'Наушники'}, {id: 3, name: 'Мышки'},
+    {id: 4, name: 'Корпуса'}, {id: 5, name: 'Ноутбуки'}, {id: 6, name: 'Мониторы'}];
 
 const CreateProduct = () => {
 
@@ -32,7 +32,7 @@ const CreateProduct = () => {
         price: 0,
         imageUrl: '',
         description: '',
-        category: 0
+        category: 1
     })
 
     const [errors, setErrors] = useState<{
@@ -47,7 +47,7 @@ const CreateProduct = () => {
     };
 
     const maxId = () => {
-        if (products.length === 1) return '0'
+        if (products.length === 1) return '1'
         const validIds = products.map(p => +p.id).filter(id => !isNaN(id));
         const maxId = validIds.length > 0 ? Math.max(...validIds) : 0;
         console.log(maxId+1)
@@ -75,7 +75,7 @@ const CreateProduct = () => {
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (validate()){
-        dispatch(addProduct({
+        dispatch(putProduct({
             id: maxId(),
             title: formData.title,
             description: formData.description,
@@ -89,7 +89,7 @@ const CreateProduct = () => {
             price: 0,
             imageUrl: '',
             description: '',
-            category: 0
+            category: 1
         })
         navigate('/')}
     }

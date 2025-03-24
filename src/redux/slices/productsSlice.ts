@@ -2,10 +2,20 @@ import type {PayloadAction} from '@reduxjs/toolkit'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from 'axios'
 
+
+
+export const putProduct = createAsyncThunk<Product, Product>(
+    'products/putProducts',
+    async (product: Product) => {
+        const response = await axios.post<Product>(`https://67de9968471aaaa7428500a8.mockapi.io/products`, product)
+        return response.data
+    },
+)
+
 export const fetchProducts = createAsyncThunk<Product[]>(
     'products/fetchProducts',
     async () => {
-        const response = await axios.get<Product[]>('https://67de9968471aaaa7428500a8.mockapi.io/products')
+        const response = await axios.get<Product[]>(`https://67de9968471aaaa7428500a8.mockapi.io/products?`)
         return response.data
     },
 )
@@ -23,19 +33,21 @@ export interface Product {
 
 export interface ProductsState {
     items: Product[];
-    newItems: Product[];
     loading: 'idle' | 'pending' | 'succeeded' | 'failed';
     error: string | null;
     isFavourite: boolean;
+    category: number;
+    searchValue: string;
 }
 
 
 const initialState: ProductsState = {
     items: [],
-    newItems: [],
     loading: 'idle',
     error: null,
-    isFavourite: false
+    isFavourite: false,
+    category: 0,
+    searchValue: '',
 }
 
 export const productsSlice = createSlice({
@@ -57,9 +69,13 @@ export const productsSlice = createSlice({
         deleteProduct: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter(item => item.id !== action.payload);
         },
-        addProduct: (state, action: PayloadAction<Product>) => {
-            state.newItems.push(action.payload)
+        setCategory: (state, action: PayloadAction<number>) => {
+            state.category = action.payload
         },
+        setSearchValue: (state, action: PayloadAction<string>) => {
+            state.searchValue = action.payload
+            console.log(state.searchValue)
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.pending, (state) => {
@@ -68,17 +84,26 @@ export const productsSlice = createSlice({
         })
         builder.addCase(fetchProducts.fulfilled, (state, action) => {
             state.items = action.payload
-            state.items.push(...state.newItems)
             state.loading = 'succeeded'
         })
         builder.addCase(fetchProducts.rejected, (state) => {
             state.items = []
             state.loading = 'failed'
         })
+        builder.addCase(putProduct.fulfilled, (state, action) => {
+            state.items.push(action.payload);
+        });
     }
 })
 
 // Action creators are generated for each case reducer function
-export const {setProducts, setIsLikedProduct, setIsFavourite, deleteProduct, addProduct} = productsSlice.actions
+export const {
+    setProducts,
+    setIsLikedProduct,
+    setIsFavourite,
+    setCategory,
+    deleteProduct,
+    setSearchValue
+} = productsSlice.actions
 
 export default productsSlice.reducer

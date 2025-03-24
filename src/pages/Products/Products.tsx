@@ -9,37 +9,50 @@ import {fetchProducts} from "../../redux/slices/productsSlice.ts";
 
 const Products = () => {
 
+    const categoryId = useSelector((state: RootState) => state.products.category)
     const status = useSelector((state: RootState) => state.products.loading)
     const items = useSelector((state: RootState) => state.products.items)
-    const isFavourite = useSelector((state : RootState) => state.products.isFavourite)
+    const searchValue = useSelector((state: RootState) => state.products.searchValue)
+    const isFavourite = useSelector((state: RootState) => state.products.isFavourite)
     const dispatch: AppDispatch = useDispatch();
 
-    const getProducts = () =>{
+    const getProducts = () => {
         dispatch(fetchProducts());
     }
 
-    const likedItems = items.filter((item) => item.isLiked)
+    const searchProducts = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()));
+    const likedItems = searchProducts.filter(item => item.isLiked);
+    const productsToShow = isFavourite
+        ? likedItems
+        : (categoryId > 0 ? searchProducts.filter(item => item.category === categoryId) : searchProducts);
 
-    useEffect(() =>{
+
+    useEffect(() => {
         getProducts()
     }, [])
 
-    if(status==='pending'){
-        return <p>Загрузка данных...</p>
-    }
+
 
     return (
         <div className={styles.wrapper}>
-            <Categories />
-            <div className={styles.productContainer}>
-                {!isFavourite ?
-                    items.map((item) => {
-                        return <ProductBlock key={item.id} item={item}/>
-                    })
-                : likedItems.length>0 ? likedItems.map((item) => {return <ProductBlock key={item.id} item={item}/>}) : <h2>Предметов в избранном нет</h2>}
-            </div>
+            <Categories/>
+            {status === 'pending' ? (
+                <p>Загрузка данных...</p>
+            ) : status === 'failed' ? (
+                <h2>Продуктов не найдено</h2>
+            ) : (
+                <div className={styles.productContainer}>
+                    {productsToShow.length > 0 ? (
+                        productsToShow.map(item => <ProductBlock key={item.id} item={item}/>)
+                    ) : isFavourite ? (
+                        <h2>Предметов в избранном нет</h2>
+                    ) : (
+                        <h2>Товаров нет</h2>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
 
-export default Products;
+export default Products
