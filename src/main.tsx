@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router";
 import './global.scss'
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
+    <BrowserRouter basename="/products-tz">
     <Provider store={store}>
     <App />
     </Provider>

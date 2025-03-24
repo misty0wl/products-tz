@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Products from "./pages/Products/Products.tsx";
 import {Route, Routes} from "react-router";
 import MainLayout from "./layouts/mainLayout.tsx";
@@ -8,7 +8,7 @@ import CreateProduct from "./pages/CreateProduct/CreateProduct.tsx";
 
 
 
-const App: React.FC = () => {
+const App = () => {
     return (
         <>
             <Routes>
