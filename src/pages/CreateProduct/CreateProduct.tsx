@@ -3,7 +3,7 @@ import {addProduct} from "../../redux/slices/productsSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../redux/store.ts";
 import {useNavigate} from "react-router";
-
+import styles from './CreateProducts.module.scss'
 
 type Category =
     {
@@ -52,11 +52,29 @@ const CreateProduct = () => {
         const maxId = validIds.length > 0 ? Math.max(...validIds) : 0;
         console.log(maxId+1)
         return (maxId + 1).toString();
+    }
 
+    const validate = () => {
+        let valid = true;
+        const newErrors = {title: '', description: '', price: ''};
+
+        if (formData.title.length < 1){
+            newErrors.title = ('Поле названия не должно быть пустым')
+            valid = false;
+        }if (formData.price < 1){
+            newErrors.price = 'Поле цены не должно быть пустым'
+            valid = false;
+        }if (formData.description.length < 1){
+            newErrors.description = 'Поле описания не должно быть пустым'
+            valid = false;
+        }
+        setErrors(newErrors);
+        return valid;
     }
 
     const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        if (validate()){
         dispatch(addProduct({
             id: maxId(),
             title: formData.title,
@@ -73,30 +91,43 @@ const CreateProduct = () => {
             description: '',
             category: 0
         })
-        navigate('/')
+        navigate('/')}
     }
 
     return (
-        <div>
+        <div className={styles.container}>
             <h2>Добавление продукта</h2>
             <form onSubmit={submitHandler}>
                 <label htmlFor='title'>Название</label>
-                <input onChange={handleChange} value={formData.title} id='title' type='text' placeholder='Введите название продукта'/>
+                <input onChange={handleChange} value={formData.title} name='title' id='title' type='text'
+                       placeholder='Введите название продукта'/>
+                {errors.title && <p className={styles.errors}>{errors.title}</p>}
                 <label htmlFor='description'>Описание</label>
                 <textarea onChange={handleChange} value={formData.description} id='description' name='description'
                           placeholder='Введите описание'/>
+                {errors.description && <p className={styles.errors}>{errors.description}</p>}
                 <label htmlFor='price'>Цена</label>
-                <input onChange={handleChange}  id='price' type='number' min='0' name='price' placeholder='Введите цену'/>
+                <input onChange={handleChange} id='price' type='number' min='0' name='price'
+                       placeholder='Введите цену'/>
+                {errors.price && <p className={styles.errors}>{errors.price}</p>}
+                <label htmlFor='category'>Категория</label>
                 <select onChange={handleChange} value={formData.category} id='category' name='category'>
                     {categories.map(category => (
                         <option key={category.id} value={category.id}>{category.name}</option>
                     ))}
                 </select>
-                <label  htmlFor='image'>Ссылка на изображение(опционально)</label>
+                <label htmlFor='image'>Ссылка на изображение(опционально)</label>
                 <input onChange={handleChange} value={formData.imageUrl} id='image' type='text' name='imageUrl'
                        placeholder='Введите URL изображения'/>
-                <button> Отправить</button>
+                <div className={styles.actions}>
+                    <button onClick={() => {
+                        navigate('/')
+                    }}>Назад
+                    </button>
+                    <button>Отправить</button>
+                </div>
             </form>
+
         </div>
     )
 }
